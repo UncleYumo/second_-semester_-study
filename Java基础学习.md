@@ -365,14 +365,14 @@ class PersonalInfo {
 
    **基本语法** 位运算符针对数值类型常量进行计算.运算结果也是数值
 
-   > 左移 <<
+   > **左移 <<**
    >
    > ```java
    > // 一定范围内,每向左移动一位,原数值*2,对于正负数都适用
    > int num = 2;
    > System.out.println(num << 2);
    > // 结果:8
-   >     
+   > 
    > int aunm = -2;
    > System.out.println(anum << 2);
    > // 结果:-8
@@ -382,7 +382,7 @@ class PersonalInfo {
    > >
    > > > 2 << 3 或者 8 << 1
    >
-   > 右移 >>
+   > **右移 >>**
    >
    > ```java
    > // 一定范围内,每向右移动一位,原数值/2,正负数通用
@@ -393,40 +393,133 @@ class PersonalInfo {
    > > ```java
    > > // 交换两个int型变量的值
    > > class Exchange {
-   > >     public static void main(String args[]) {
-   > >         int m = 10;
-   > >         int n = 20;
-   > >         // 交换
-   > >         int temp = 0;
-   > >         temp = 10;
-   > >         m = n;
-   > >         n = temp;
-   > >         System.out.println("m = " + m + ", n = " + n);
-   > >     }
+   > >  public static void main(String args[]) {
+   > >      int m = 10;
+   > >      int n = 20;
+   > >      // 交换
+   > >      int temp = 0;
+   > >      temp = 10;
+   > >      m = n;
+   > >      n = temp;
+   > >      System.out.println("m = " + m + ", n = " + n);
+   > >  }
    > > }
-   > > // 方式二
    > > 
+   > > // 方式二
+   > > class Exchange2 {
+   > >  public static void main(String args[]) {
+   > >      int m = 10;
+   > >      int n = 20;
+   > >      // 交换
+   > >      m = m + n;// m = 10 + 20 = 30
+   > >      n = m - n;// n = 30 - 20 = 10
+   > >      m = m - n;// m = 30 - 10 = 20
+   > >      System.out.println("m = " + m + ", n = " + n);
+   > >  }
+   > > }
+   > > 
+   > > // 方法三
+   > > class Exchange3 {
+   > >  public static void main(String args[]) {
+   > >      int m = 10;
+   > >      int n = 20;
+   > >      // 交换
+   > >      m = m ^ n;
+   > >      n = m ^ n;
+   > >      m = m ^ n;
+   > >      // 看不懂，真的，脑瘫才这么写
+   > >      System.out.println("m = " + m + ", n = " + n);
+   > >  }
+   > > }
    > > ```
    > >
    > > ```java
    > > // 交换两个String类型变量的值
    > > class Exchange {
-   > >     public static void main(String args[]) {
-   > >         String m = "Hello";
-   > >         String n = "World";
-   > >         // 交换
-   > >         String temp = "";
-   > >         temp = m;
-   > >         m = n;
-   > >         n = temp;
-   > >         System.out.println("m = " + m + ", n = " + n);
-   > >     }
+   > >  public static void main(String args[]) {
+   > >      String m = "Hello";
+   > >      String n = "World";
+   > >      // 交换
+   > >      String temp = "";
+   > >      temp = m;
+   > >      m = n;
+   > >      n = temp;
+   > >      System.out.println("m = " + m + ", n = " + n);
+   > >  }
    > > }
    > > ```
    > >
-   > > 
-
    
-
+   ---
    
+   ##### 第二章随堂复习与企业真题
+   
+   1. 关键字、保留字
+   
+      - 关键字：被Java赋予特殊含义的字符串，官方规范中有50个，不包含true，false，null（可看作关键字）
+      - 保留字：goto，const
+   
+   2. 标识符命名规则
+   
+      - 包名
+   
+        > 多单词组成时所有字母都小写：xxxyyyzzz
+        >
+        > 例如：java.lang , com.fuckyou.bean
+   
+      - 变量名，方法名
+   
+        > 多单词组成时，第一个单词首字母小写，第二个单词开始每个单词首字母大写：xxxYyyZzz
+        >
+        > 例如：age , name , bookName , main , binarySearch , getName
+   
+      - 类名，接口名
+   
+        > 多单词组成时，所有单词的首字母大写：XxxYxxZzz
+        >
+        > 例如：HelloWorld，String，System
+   
+      - 常量名
+   
+        > 所有字母都大写。多单词时每个字母都用下划线连接：XXX_YYY_ZZZ
+        >
+        > 例如：MAX_VALUE , PI , DEFAULT_CAPACITY
+   
+   3. 测试字符型和布尔型
+   
+      - 声明long类型变量时，需要提供后缀。后缀为`l`或`L`
+   
+        ```java
+        long num_long = 123123123l // 123123123L
+        ```
+   
+      - 声明float类型变量时，需要提供后缀`f`或`F`
+   
+        ```java
+        float f1 = 12.3f // 12.3F
+        ```
+   
+      - 实际开发中的浮点型通常用double
+   
+      - 通过测试发现浮点型变量的精度不高时，则需要使用BigDecimal类替换浮点型变量
+   
+      - boolean类型在实际的内存分配中，占用4个字节
+   
+   4. 取模 / 取余
+   
+      ```java
+      int i = 12;
+      int j = 5;
+      System.out.println("i % j"); // 结果：2
+      ```
+   
+   **企业真题**
+   
+   1. &与&&的区别
+   
+      > &为位运算符，&&为逻辑运算符
+      >
+      > &左右两边都会计算，而&&当左侧为false则直接输出false，省去右边计算
+   
+   2. Java中有8中基本数据类型，不包括String，String属于引用类型
 
