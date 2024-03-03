@@ -331,8 +331,6 @@ class PersonalInfo {
    > G-->H(操作系统)
    > ```
 
-   ---
-
    ## 第二章
 
    ### 数据类型
@@ -343,7 +341,7 @@ class PersonalInfo {
    > - 浮点型: float \ double
    > - 字符型: char
    > - 布尔型: boolean
-
+   
    **引用数据类型**
 
    > - 类(class)
@@ -352,7 +350,7 @@ class PersonalInfo {
    > - 枚举(enum)
    > - 注解(annotation)
    > - 记录(record)
-
+   
    ---
 
    **基本数据类型变量间的运算规则**
@@ -371,7 +369,7 @@ class PersonalInfo {
    > ```java
    > 
    > ```
-
+   
    ### 位运算符 (难点非重点)
 
    **基本语法** 位运算符针对数值类型常量进行计算.运算结果也是数值
@@ -536,4 +534,89 @@ class PersonalInfo {
    
    3. Java开发中计算金额需要使用BigDecimal类，可以实现任意精度的数据运算
    
-   4. 
+   4. int i = 0; i = i++; 执行后i的值仍为0
+   
+   5. 如何将两个变量的值互换
+   
+      > ```java
+      > String s1 = "abc";
+      > String s2 = "123";
+      > 
+      > String temp = s1;
+      > s1 = s2;
+      > s2 = temp;
+      > ```
+   
+   6. boolean占几个字节
+   
+      > 编译时不谈几个字节
+      >
+      > 但是在JVM给boolean类型分配内存空间时，boolean类型的变量占据一个槽位（slot，等于4个字节）
+      >
+      > 细节：true：1 ；false：0
+      >
+      > 拓展：在内存中，byte/short/char/boolean/int/float/占用1个slot；double/long占用2个slot
+      >
+   
+   7. 为什么Java中**0.1+0.2**结果不是**0.3**
+   
+      包括JavaScript、Ruby、Python、Swift和Go等语言都使用**IEEE 754标准**（电气电子工程师学会）
+      
+      > 整数变为二进制，能够做到”每个十进制整数都有对应的二进制数“
+      >
+      > 对于小数，无法做到”每个小数都有对应的二进制数字“
+      >
+      > 因此，遇见小数的情况，比如开发银行、交易等系统，可以采用**四舍五入**或者**同乘同除**等方式进行验证
+
+## 第三章
+
+### 流程控制
+
+**if-else**
+
+```java
+//格式1
+if(a==b) {
+    System.out.println("Format 1");
+}
+
+//格式2
+if(a==b) {
+    System.out.println("aaa");
+}else {
+    System.out.println("bbb");
+}
+
+//格式3
+if(a==b) {
+    System.out.println("aaa");
+}else if {
+    System.out.println("bbb");
+}else if {
+    System.out.println("ccc");
+}else {
+    System.out.println("ddd");
+}
+```
+
+**使用Scanner类从键盘获取数据**
+
+```java
+//导包
+import java.util.Scanner;
+//创建Scanner类型的对象
+Scanner scan = new Scanner(System.in);
+//调用Scanner类的相关方法(next() / nextXxx()),来获取指定类型的变量
+
+//取第一个位置的字符
+scan.next().charAt(0) 
+
+
+//释放资源 scan在控制台被使用，如果不主动回收将会被GC忽略回收，造成内存泄漏
+scan.close();
+
+//注意：需要根据相应的方法，来指定类型的值。如果输入的数据类型与要求的类型不匹配时，会报异常导致程序终止
+```
+
+> Scanner类中提供了获取byte\short\int\float\double\boolean\String类型变量的方法，但没有提供获取char类型变量的方法，需要使用next().charAt(num)来获取
+

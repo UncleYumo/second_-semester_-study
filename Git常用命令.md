@@ -1,34 +1,10 @@
 ---
 
-### Git一次性配置(全局)
-
-
-
 配置用户名
 
-```git
-git config --global user.name "#username#"
-```
+配置头像
 
-配置邮箱
-
-```git
-git config --global user.email ###@#.com
-```
-
- 查看所有配置
-
-```git
-git config --list 
-```
-
----
-
-### 创建版本库并提交文件
-
-
-
-初始化本地仓库
+始化本地仓库
 
 ```git
 git init
