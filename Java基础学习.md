@@ -620,3 +620,104 @@ scan.close();
 
 > Scanner类中提供了获取byte\short\int\float\double\boolean\String类型变量的方法，但没有提供获取char类型变量的方法，需要使用next().charAt(num)来获取
 
+**如何获取一个随机数**
+
+```java
+/*
+使用Java提供的API：Math类的random() [0.0,1.0]
+Math在Long包中，不需要导入
+*/
+double d1 = Math.random();
+System.out.println(d1);
+
+//获取一个[0,100]范围的随机数
+Math.random() * 100;
+
+//获取一个[1,100]范围的随机数
+(int)(Math.random() * 100)+1
+    
+//获取一个[a,b]范围的随机整数
+    (int)(Math.random() * (b - a + 1)) + a
+```
+
+**switch-case**
+
+```java
+ //Grammer format
+switch(Expression) {
+    case constant_1:
+        Execute_statement_1;
+        break;
+    case constant_2:
+        Execute_statement_2;
+        break;
+    default:
+        Execute_statement_3;
+        break;
+}
+```
+
+> 使用switch-case实现：对学生成绩大于60分的，输出合格，低于60分的输出不合格。
+>
+> ```java
+> import java.util.Scanner;
+> 
+> public class Switch_case {
+>     public static void main(String[] args) {
+> 
+>         System.out.println("请输入学生成绩：");
+>         Scanner scan = new Scanner(System.in);
+>         double score = scan.nextInt();
+> 
+>         boolean situation_1 = score > 60;
+>         int evaluate = 0;
+>         if(situation_1) {
+>             evaluate += 1;
+>         }
+> 
+>         switch (evaluate) {
+>             case 1:
+>                 System.out.println("成绩合格");
+>                 break;
+> 
+>             default:
+>             System.out.println("成绩不合格");
+>                 break;
+>         }
+> 
+>     }
+> }
+> ```
+
+---
+
+> 编写程序，从键盘上输入2023年的“month”和“day”，要求通过程序输入判断日期为2023年的第几天
+>
+> ```java
+> import java.util.*;
+> public class Evaluate_data {
+>     public static void main(String[] args) {
+> 
+>         Scanner scan = new Scanner(System.in);
+> 
+>         System.out.println("请输入月份：");
+>         int month = scan.nextInt();
+>         System.out.println("请输入日期");
+>         int day = scan.nextInt();
+> 
+>         int[] monthNum = {31,29,31,30,31,30,31,31,30,31,30};
+> 
+>         int days = 0;
+>         days = days + day;
+>         for(int i = 0;i < month-1;i++) {
+>             
+>             days = monthNum[i] + days;
+> 
+>         }
+> 
+>         System.out.println("这是2024年的第" + days + "天");
+> 
+>     }
+> }
+> ```
+
