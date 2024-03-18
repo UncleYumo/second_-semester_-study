@@ -134,6 +134,7 @@ JavaME / J2ME（小型版）
 2. JRE = JVM + Java SE标准类库
 3. JDK = JVM + Java SE标准类库 + 开发工具集
 4. 如果只想运行开发好的.class文件，只需要JRE
+5. SDK：软件开发工具包
 
 ---
 
@@ -721,3 +722,737 @@ switch(Expression) {
 > }
 > ```
 
+**循环结构**
+
+循环结构的四个要素：
+
+	1. 初始化条件
+	1. 循环条件
+	1. 循环体
+	1. 迭代部分
+
+- for循环
+
+  > ```java
+  > for(A;B;C) {
+  > 	statement;
+  > }
+  > ```
+  >
+  > 输出1000以内所有的水仙花数
+  >
+  > ```java
+  > public class CirculatingMark {
+  > public static void main(String[] args) {
+  > 
+  >   int temp = 0;
+  >   System.out.println("1000以内的水仙花数有：");
+  >   for(int i = 100;i < 1000;i++) {
+  > 
+  >       int unitPlace = (int) i % 10;
+  >       int decadePlace = (int) i / 10 % 10;
+  >       int hundredPlace = (int) i / 100;
+  > 
+  >       temp = unitPlace*unitPlace*unitPlace + decadePlace*decadePlace*decadePlace + hundredPlace*hundredPlace*hundredPlace;
+  >       if(i == temp) {
+  >           System.out.print(i + "\t");
+  >       }
+  > }
+  >   
+  > }
+  > }
+  > ```
+  > 
+  >输入两个正整数m和n，求其最大公约数和最小公倍数
+  > 
+  >```java
+  > //最大公约数：
+  > int m = 40;
+  > int n = 60;
+  > int result = 0;
+  > int min = (m < n)? m:n;
+  > for(int i = min;i >= 1;i--) {
+  > if(m % i == 0 && n % i == 0) {
+  > result = i;
+  >   break;
+  >   }
+  > }
+  > ```
+  > 
+  >计算质数
+  > 
+  >```java
+  > public class CirculatingMark {
+  > public static void main(String[] args) {
+  >  
+  > 
+  >   int count = 0;
+  >      long time_start = System.currentTimeMillis();
+  >      for(int i = 2;i <= 100000;i++) {
+  >    
+  >       count = 0;
+  >    
+  >       for(int m = 2;m < i;m++) {
+  >    
+  >           if(i % m == 0) {
+  >                  count++;
+  >              }
+  >          }
+  >    
+  >       if(count == 0) {
+  >              System.out.println(i);
+  >          }
+  >    
+  > 
+  > 
+  >   }
+  >      long time_end = System.currentTimeMillis();
+  >      System.out.println("The cost of time is : " + (time_end - time_start));
+  >    
+  > }
+  >  
+  > }
+  > ```
+  > 
+  >获取系统当前时间
+  > 
+  >```java
+  > long time_now = System.currentTimeMillis(); //毫秒级
+  > ```
+  > 
+  >项目实战《谷粒记账软件》
+  > 
+  >```java
+  > 
+  > ```
+  > 
+
+**企业真题**
+
+1. Java支持哪些类型的循环
+   - for; while; do-while
+   - 增强for循环/foreach（集合中讲解）
+
+## 第四章
+
+1. Java项目结构
+
+   层级关系：project - module - package - class
+
+   具体内容：
+
+   - 一个project中可以创建多个module
+   - 一个module中可以创建多个package
+   - 一个package中可以创建多个class
+
+   > 这些结构的划分是为了方便管理不同功能的代码
+
+2. Project和Module的概念
+
+## 第五章
+
+### 数组
+
+
+
+**数组的声明和初始化**
+
+- Static initialization: The assignment of array variables is performed simultaneously with the assignment of array elements.
+
+- Dynamic initialization: The assignment of array variables is performed separately from the assignment of array elements.
+
+> ```java
+> //declare an array
+> double[] prices;
+> //assignment the array that had been declared
+> prices = new double[]{0,1,2,3,4,5,6,7,8,9}
+> 
+> //init a new array
+> String[] foods = new String[4];
+> 
+> ```
+
+**数组内存结构**
+
+> 1. Java中内存结构使如何划分的（重点为JVM运行时的内存环境）
+>
+>    将内存区域划分为5个部分：程序计数器、虚拟机栈、本地方法栈、堆与方法区
+>
+> 2. 与目前数组相关的内存结构：如 int[ ] arr = new int[ ]{1, 2, 3};
+>
+>    虚拟机栈：用于存放方法中声明的变量，如 arr
+>
+>    堆：用于存放数组中的实体（即数组中的所有元素），如 1，2，3
+>
+> 3. 出现**new**代表堆区新开辟空间，否则沿用被复制对象的堆区数据，类似C中的指针
+>
+> 4. 在main()中声明变量：
+>
+>    > 虚拟机栈：main()作为一个栈帧，压入栈空间中。在main()栈帧中，存储着arr变量，arr记录着实体数组的首地址
+
+**数组练习题**
+
+> ```java
+> //Question : Input the INFO of student and make judgments about their grades and scores;
+> import java.util.*;
+> 
+> class judgmentGrade {
+>  String returnGrade(int score) {
+>      if(score < 60) {
+>          return "D";
+>      } else if (score >= 60 && score < 80) {
+>          return "C";
+>      } else if (score >= 80 && score <90) {
+>          return "B";
+>      } else if (score >= 90) {
+>          return "A";
+>      }
+>      return "错误";
+>  }
+> 
+> }
+> 
+> public class ArrayLearning {
+>  public static void main(String[] args) {
+> 
+>      //dynamic init array
+>      Scanner scan = new Scanner(System.in);
+>      System.out.println("Please input the number of all students.");
+> 
+>      int count = scan.nextInt();
+>      int[] scores = new int[count];
+> 
+>      int max_score = 0;
+> 
+>      //enter the student grades in sequence and save the grades in sequence in the array elements
+>      System.out.println("Please input the score in sequence.");
+>      for(int i = 0;i < scores.length;i++) {
+>          scores[i] = scan.nextInt();
+>          if(scores[i] >= max_score) {
+>              max_score = scores[i];
+>          }
+>      }
+> 
+>      //go through the array elements,according to the difference between the student's score and the highest score,
+>      //get a grade for each student and output the score and grade.
+>      //90-100 A;80-89 B;60-79 C;0-59 D;
+> 
+>      judgmentGrade jGrade = new judgmentGrade();
+> 
+>      System.out.println("The highest score is : " + max_score);
+>      for(int i = 0;i < scores.length;i++) {
+>          System.out.println("Student " + (i+1) + " score is " + scores[i]
+>                                 + " ;grade is : " + jGrade.returnGrade(scores[i]));
+>         }
+> 
+> 
+>     }
+> }
+> 
+> //array in revrese order
+> 
+> import java.util.*;
+> 
+> class randomOperation {
+>     int getRandom_Int(int a,int b) {
+>         //获取一个[a,b]范围的随机整数
+>         return (int)(Math.random() * (b - a + 1)) + a;
+>     }
+> 
+>     double getRandom_Double(double a,double b) {
+>         //获取一个[a,b]范围的随机整数
+>         return (Math.random() * (b - a + 1)) + a;
+>     }
+> }
+> 
+> class arrayOperation {
+>     void printArray(int array[]) {
+>         for(int i = 0;i < array.length;i++) {
+>             System.out.print(array[i] + " , ");
+>         }
+>         System.out.println("");
+>     }
+> }
+> 
+> public class ArrayLearning {
+>     public static void main(String[] args) {
+> 
+>         System.out.println("--------Program Starts--------");
+> 
+>         randomOperation randomNum = new randomOperation();
+>         arrayOperation arrOperation = new arrayOperation();
+> 
+>         int[] array = new int[11];
+>         for(int i = 0;i < array.length;i++) {
+>             array[i] = randomNum.getRandom_Int(10,99);
+>         }
+> 
+>         arrOperation.printArray(array);
+> 
+>         for(int i = 0;i < array.length/2;i++) {
+>             int backNum = array.length-1-i;
+>             int temp = array[backNum];
+>             array[backNum] = array[i];
+>             array[i] = temp;
+>         }
+> 
+>         arrOperation.printArray(array);
+> 
+>         System.out.println("--------Program Closed--------");
+> 
+>     }
+> }
+> ```
+
+**二维数组的声明和初始化**
+
+- the declaration and initialization of the two-dimensional arrays
+
+> ```java
+> int[][] = new int[3][2] //3 row with 2 column
+> //使用未初始化的数组空间会报内存错误
+> ```
+
+**数组中常见的算法操作**
+
+- Common Algorithm Operations In Arrays
+
+> 1. 数组扩容
+>
+>    ```java
+>    int[] arr = new int[] = {1,2,3,4,5};
+>
+>    //double capacity expansion
+>    int[] newArr = new int[arr.length * 2]; //arr.length * 2 === arr.length << 1 --bit operation
+>
+>    //copy the elements from the orignial array into the new array.
+>    for(int i = 0;i < arr.length;i++) {
+>        newArr[i] = arr[i];
+>    }
+>    arr = newArr //make the address of the old array point to the new one
+>    ```
+>
+>    > 注意，此处arr与newArr皆为堆区的栈帧，真正的数组数据存放于堆区，因此此处可以翻译为将栈区中名为arr的栈帧指向堆区新数组的首地址
+>
+> 2. 删除数组中指定的元素
+>
+>    > ```java
+>    > import java.util.*;
+>    > 
+>    > class randomOperation {
+>    >     int getRandom_Int(int a,int b) {
+>    >         //获取一个[a,b]范围的随机整数
+>    >         return (int)(Math.random() * (b - a + 1)) + a;
+>    >     }
+>    > 
+>    >     double getRandom_Double(double a,double b) {
+>    >         //获取一个[a,b]范围的随机浮点数
+>    >         return (Math.random() * (b - a + 1)) + a;
+>    >     }
+>    > }
+>    > 
+>    > class arrayOperation {
+>    >     void printArray(int array[]) {
+>    >         for(int i = 0;i < array.length;i++) {
+>    > 
+>    >             System.out.print(array[i]);
+>    >             if(i < array.length - 1) {
+>    >                 System.out.print(" , ");
+>    >             }
+>    >         }
+>    >         System.out.println();
+>    >     }
+>    > }
+>    > 
+>    > public class ArrayLearning {
+>    >     public static void main(String[] args) {
+>    > 
+>    >         System.out.println("--------Program Starts--------");
+>    > 
+>    >         //Build an array which length is 10 using randomOperation
+>    >         randomOperation randomNum = new randomOperation();
+>    >         arrayOperation arrOperation = new arrayOperation();
+>    >         int[] arr = new int[10];
+>    > 
+>    >         for(int i = 0;i < arr.length;i++) {
+>    >             arr[i] = randomNum.getRandom_Int(10,99);
+>    >         }
+>    >         arrOperation.printArray(arr);
+>    > 
+>    >         //delete an element of the array
+>    >         Scanner scan = new Scanner(System.in);
+>    >         System.out.print("Please input the Index of the array's element to be deleted : ");
+>    >         int deleteIndex = scan.nextInt();
+>    >         int[] newArr = new int[arr.length -1];
+>    > 
+>    >         for(int i = deleteIndex;i < arr.length;i++) {
+>    >             arr[i - 1] = arr[i];
+>    >         }
+>    > 
+>    >         for(int i = 0;i < newArr.length;i++) {
+>    >             newArr[i] = arr[i];
+>    >         }
+>    > 
+>    >         arr = newArr;
+>    >         
+>    >         arrOperation.printArray(arr);
+>    > 
+>    >         System.out.println("--------Program Closed--------");
+>    > 
+>    >     }
+>    > }
+>    > 
+>    > ```
+>
+> 3. 数组的线性查找（太low所以不演示代码了）与二分法查找
+>
+>    > ```java
+>    > //二分法查找的前提：数组内元素必须是有序排列
+>    > import java.util.*;
+>    > 
+>    > class randomOperation {
+>    >     int getRandom_Int(int a,int b) {
+>    >         //获取一个[a,b]范围的随机整数
+>    >         return (int)(Math.random() * (b - a + 1)) + a;
+>    >     }
+>    > 
+>    >     double getRandom_Double(double a,double b) {
+>    >         //获取一个[a,b]范围的随机整数
+>    >         return (Math.random() * (b - a + 1)) + a;
+>    >     }
+>    > }
+>    > 
+>    > class arrayOperation {
+>    >     void printArray(int array[]) {
+>    >         for(int i = 0;i < array.length;i++) {
+>    > 
+>    >             System.out.print(array[i]);
+>    >             if(i < array.length - 1) {
+>    >                 System.out.print(" , ");
+>    >             }
+>    >         }
+>    >         System.out.println();
+>    >     }
+>    > }
+>    > 
+>    > public class ArrayLearning {
+>    >     public static void main(String[] args) {
+>    > 
+>    >         System.out.println("--------Program Starts--------");
+>    > 
+>    >         //Build an array which length is 10 using randomOperation
+>    >         randomOperation randomNum = new randomOperation();
+>    >         arrayOperation arrOperation = new arrayOperation();
+>    >         int[] arr = new int[10];
+>    > 
+>    >         for(int i = 0;i < arr.length;i++) {
+>    >             arr[i] = randomNum.getRandom_Int(-99,99);
+>    >         }
+>    >         arrOperation.printArray(arr);
+>    > 
+>    >         //bubble sort | order from smallest to largest
+>    >         for(int i = 0;i < arr.length - 1;i++) {
+>    >             for(int j = 0;j < arr.length - 1 - i;j++) {
+>    >                 if(arr[j] > arr[j+1]) {
+>    >                     int temp = arr[j+1];
+>    >                     arr[j+1] = arr[j];
+>    >                     arr[j] = temp;
+>    >                 }
+>    >             }
+>    >         }
+>    > 
+>    >         arrOperation.printArray(arr);
+>    > 
+>    >         int target = randomNum.getRandom_Int(0,9);
+>    >         System.out.println("Target element is : " + arr[target]);
+>    > 
+>    >         int head = 0;
+>    >         int end = arr.length - 1;
+>    >         boolean isFlag = false;
+>    > 
+>    >         while(head <= end) {
+>    >             int middle = (head + end) / 2;
+>    >             if(arr[middle] == arr[target]) {
+>    >                 System.out.println("Find target element : " + arr[middle] + "\nIndex is : " + middle);
+>    >                 isFlag = true;
+>    >                 break;
+>    >             } else if (arr[middle] < arr[target]) {
+>    >                 head = middle + 1;
+>    >             } else if (arr[middle] > arr[target]) {
+>    >                 end = middle - 1;
+>    >             }
+>    >         }
+>    > 
+>    >         if(!isFlag) {
+>    >             System.out.print("Target isn't in this array!");
+>    >         }
+>    > 
+>    >         System.out.println("--------Program Closed--------");
+>    > 
+>    >     }
+>    > }
+>    > 
+>    > ```
+>
+> 4. 快速排序（快排Quick Sort）Time Complexity : n * lon~2~ n
+>
+>    > 原理解析：
+>    >
+>    > - 先在数组中随机挑选一个基准值（如第一个元素）
+>    >
+>    >   将数组中的数组分成比它小和比他大的两部分
+>    >
+>    > - 再从每一部分重复第一步，选出一个基准值并按大小分成两个部分
+>    >
+
+**Arrays工具类的使用**
+
+- ```import java.util.Arrays;```
+
+> 1. 比较两个数组元素是否依次相等
+>
+>    ```java
+>    boolean equals(int[] a,int[] b);
+>    ```
+>
+> 2. 输出数组元素信息
+>
+>    ```java
+>    String string = Arrays.String toString(int[] a);
+>    ```
+>
+> 3. 将指定值填充至数组中
+>
+>    ```java
+>    int value = 10;
+>    Array.fill(arr,value);
+>    ```
+>
+> 4. 使用快速排序算法实现排序
+>
+>    ```java
+>    int[] arr = new int[]{11,55,88,33,99,66,88,77,44,22};
+>    Arrays.sort(arr);
+>    
+>    System.out.println(Arrays.toString(arr));
+>    ```
+>
+> 5. 二分查找
+>
+>    ```java
+>    int value = 10;
+>    int index = Arrays.binarySearch(arr,value);
+>    //if index < 0 === not found
+>    ```
+
+**数组中使用的常见异常小结**
+
+> 1. 数组角标越界的异常
+>
+>    ArrayIndexOutOfBoundsException
+>
+> 2. 空指针的异常
+>
+>    NullPointerException // 数组的栈帧被抹除了，堆区失去联系无法调用 or 堆区的数组还未指定，如动态初始化，无法调用 or 在堆区值为Null时调用数组方法
+
+**出现异常会怎样，如何处理**
+
+> 1. 一旦程序执行中出现异常，程序就会终止执行
+> 2. 针对异常提供的信息，修改对应的代码，避免异常在此出现
+>
+
+**企业真题**
+
+> 1. 数组没有length()这个方法，但有length属性，String有length()
+>
+> 2. 有数组int[] arr,用Java代码将数组中的元素颠倒
+>
+>    ```java
+>    int[] arr = new int[]{9,8,7,6,5,4,3,2,1,0};
+>    for(int i = 0;i < ((arr.length) / 2);i++) {
+>        int temp = 0;
+>        temp = arr[i];
+>        arr[i] = arr[arr.length - 1 - i];
+>        arr[arr.length - 1 - i] = temp;
+>    }
+>    ```
+>
+> 3. 数组有哪些排序方式，手写一下？
+>
+>    冒泡排序，快速排序，希尔排序等
+>
+> 4. 常见排序算法，说下快排过程，时间复杂度？
+
+# 第六章
+
+## 类与对象 class and object
+
+**对象在内存中的分配涉及到的内存结构（理论）**
+
+> 1. 栈区（stack）：方法内定义的变量，存储在栈中
+> 2. 堆区（heap）：new出来的结构（数组的实例、对象的实例），包括对象中的属性
+> 3. 方法区（method area）：存放类的模板，比如：Person类的模板（次重要）
+
+**类对象中的内存解析**
+
+> 1. 创建类的一个对象，属性赋值
+>    - 每一个方法的调用，对应栈区的一个栈帧
+>    - 方法内的变量称为局部变量，也存放在对应方法存在的栈帧中
+>    - new的实例皆在堆区，如```Person p1 = new Person();```，p1存放在栈帧中，其保存着堆区所new对象实例的地址，对象实例中存放着对象的属性
+> 2. 创建类的多个对象，属性赋值
+>    - 用已存在的实例还初始化实例，如```Person p3 = p1;```，p3存放在主方法栈帧中，p3指向p1在堆区的首地址，由于没有new操作，所以不会开辟新的堆区空间
+>    - 创建类的多个对象时，每个对象在堆空间中有一个对象实例。每个对象实例中保存着一份类的属性。不同实例的属性值相互独立
+> 3. 对象调用方法的过程
+
+**类对象中的方法**
+
+> 1. 方法调用的内存解析
+>    - 形参：方法在声明时，一对 () 内声明的一个或多个形式参数，简称形参
+>    - 实参：方法在被调用时，实际传递给形参的变量或常量，为实际参数，简称实参
+>    - 内存解析：每一个方法对应一个栈帧，如每次主方法main()调用时都会开辟一块栈帧的空间，凡是new出来的实例都在堆区，实例名仅保存在栈帧中，其指向堆区的实例首地址，实例的成员变量都在堆区，每次调用实例方法时，都会开辟一个新的栈帧（每次掉方法都会开辟新的栈帧），方法的局部变量都在方法开辟的栈帧里，即局部变量在栈区，返回值也在栈中，被main()接收，属于主方法
+> 2. 
+
+**方法的值传递机制**
+
+> 1. 引用数据类型的值传递机制
+>
+>    > 基本数据类型没有所谓的地址，只有数据值，如在主方法中的```int n = 10; int m = 20;```
+>
+>    - 数组类型
+>
+>      ```java
+>      int[] arr1 = new int[]{1,2,3,4};
+>      int[] arr2 = arr1;
+>      arr2[0] = 10;
+>      System.out.println(Arrays.toString(arr1)); // [10,2,3,4]
+>      ```
+>
+>    - 对象类型
+>
+>      ```java
+>      Order order1 = new Order();
+>      order1.orderID = 1001;
+>                               
+>      Order order2 = order1;
+>      order2.orderID = 1002;
+>                               
+>      System.out.println(order1.orderID); // 1002
+>      ```
+>
+>      > 引用数据类型在栈区存储的就是地址值，所以用该值初始化与传值时传递的也是地址值，如数组和实例之间的相互赋值与初始化；
+>      >
+>      > 再次提醒，只有使用new操作时才会在堆区开辟新的空间
+
+**方法的递归**
+
+> 1. 斐波那契数列
+>
+>    ```java
+>     public int func(int n) {
+>         if(n == 1) {
+>             return 1;
+>         }else if (n == 2) {
+>             return 1;
+>         } else {
+>             return func(n - 1) + func(n - 2)
+>         }
+>     }
+>    ```
+
+**package与import的使用**
+
+> 1. package
+>
+>    - 用于指明该文件中定义的类、接口等结构所在的包
+>    - 一个源文件只能有一个声明包的package语句
+>    - package语句作为Java源文件的第一条语句出现；若缺省该语句，则为无名包
+>    - 包名属于标识符，满足标识符的命名规则和规范（全部小写、见名知意）
+>      - 包通常使用所在公司域名的倒置：tech.revolicise.xxx
+>      - 取包名时不要使用```java.xx```包
+>    - 包对应于文件系统的目录，package语句中用```.```来指明目录的层次
+>    - 同一个包下可以声明多个结构（类、接口），但是不能定义同名的结构；不同的包下可以定义同名的结构
+>
+> 2. package的作用
+>
+>    - 包可以包含类和子包，划分**项目层次**，便于管理
+>    - 帮助**管理大型软件**系统：将功能相近的类划分到同一个包中，比如：MVC的设计模式
+>    - 解决**类命名冲突**的问题
+>    - 控制**访问权限**
+>
+> 3. JDK中主要的包
+>
+>    - ```java.lang```   包含一些Java语言的核心类，如String、Math、Integer、System和Thread，提供常用的功能
+>    - ```java.net```   包含执行与网络相关操作的类与接口
+>    - ```java.io```   包含能提供多种输入/输出功能的类
+>    - ```java.util```   包含一些实用的工具类，如定义系统特性、接口的集合框架类、使用与日期日历相关的函数
+>    - ```java.text```   包含了一些java格式化相关的类
+>    - ```java.sql```   包含了java进行JDBC数据库编程的相关类、接口
+>
+>    - ```java.awt```   包含了构成抽象窗口工具集（abstract window toolkits）的多个类，这些类被用来构建和管理应用程序
+>
+> 4. import关键词的使用
+>
+>    - 为了使用定义在其他包中的Java类，需要import语句显示引入指定包下所需要的类，相当于告诉编译器去哪里找寻这个类
+
+**封装性 - Encapsulation**
+
+- 随着计算机系统越来越复杂，类会越来越多，那么类之间的访问边界则必须把握好，面对对象的开发原则要遵循==高并发、低耦合==
+
+- 高内聚、低耦合是软件工程中的概念，也是UNIX操作系统设计的经典原则
+
+  > ==高内聚==：类的内部数据操作细节自己完成，不允许外部干涉
+  >
+  > ==低耦合==：仅仅暴露少量的方法给外部使用，尽量方便外部调用
+
+- 通俗的讲：把对于类，将该隐藏的隐藏起来，该暴露的暴露出来，这就是封装性的设计思想
+
+> 1. 如何实现数据封装
+>
+>    - **权限修饰符**
+>
+>      Java规定了4种权限修饰，分别是：==private、缺省、protected、public==
+>
+>    - **作用**
+>
+>      我们可以使用4种权限修饰来修饰类及类的内部成员。当这些成员被调用时，体现可见性的大小
+>      
+>    - **类**：只能使用public、缺省修饰
+>
+>    - **类的内部成员**：可以使用4种权限进行修饰
+>
+> 2. 四种权限的具体使用：public - protected - 缺省 - private
+>
+>    - private：只能在本类内部使用
+>
+>    - 缺省：在本类内部和本包内使用
+>
+>    - protected：本类内部、本包以及其他包的子类可使用
+>
+>    - public：本类内部、本包内、其他包的子类和非子类皆可使用
+>
+> 3. 开发中4种权限使用频率的情况
+>
+>    - 比较高：public、private
+>    - 比较低：缺省、protected
+>
+> 4. 封装性的体现
+>
+>    - 场景一：私有化类的属性，提供公共的get和set方法，对此属性进行获取或修改
+>    - 场景二：将类中不需要对外暴露的方法，设置为private
+>    - 场景三：单例模式中构造器设置为private，避免在类的外部创建实例。（在static关键字部分具体说明）
+
+**构造器 - Constructor**
+
+- 构造器就是构造器，不是构造方法
+
+> 1. 构造器的作用
+>    - 搭配new关键字，创建类的对象
+>    - 在创建对象的同时，给对象的相关属性赋值
+> 2. 构造器使用说明
+>    - 声明格式：```权限修饰符 类名（形参列表）{}```
+>    - 如果未主动设置构造器，会自动生成空参构造器，且构造器权限与类声明的权限相同
+>    - 一个类中可以生成多个构造器，彼此之间构成重载
+>    - 创建匿名对象```class.method(new Class(type value 1,type value2))```
+> 3. 关于匿名对象
+>    - 匿名对象往往只能被调用一次
+>    - 匿名对象常常作为实参传递给方法的形参，用于赋值
