@@ -1332,10 +1332,10 @@ switch(Expression) {
 >      ```java
 >      Order order1 = new Order();
 >      order1.orderID = 1001;
->                               
+>                                                                                 
 >      Order order2 = order1;
 >      order2.orderID = 1002;
->                               
+>                                                                                 
 >      System.out.println(order1.orderID); // 1002
 >      ```
 >
@@ -1456,3 +1456,511 @@ switch(Expression) {
 > 3. 关于匿名对象
 >    - 匿名对象往往只能被调用一次
 >    - 匿名对象常常作为实参传递给方法的形参，用于赋值
+
+**类中属性赋值过程**
+
+> 1. 在类的属性中，可以有哪些位置给属性赋值？
+>
+>    - 默认赋值
+>    - 显示赋值
+>    - 构造器赋值
+>    - 通过object.method（可以多次执行）
+>    - 通过object.stats（可以多次执行）
+>
+> 2. 这些位置执行的先后顺序是怎样的？
+>
+>    ```mermaid
+>    graph LR
+>    F[左先右后]
+>    A(默认赋值)-->B(显式初始化)-->C(构造器中初始化)-->D(对象.方法 / 对象.属性)
+>    ```
+
+**JavaBean的理解**
+
+- jianJavaBean是一种Java语言写成的可重用组件
+
+> 1. 所谓JavaBean，是指符合如下标准的Java类
+>    - 类是公共的
+>    - 有一个无参的公共的构造器
+>    - 有属性，且有对应的get、set方法
+> 2. 用户可以使用JavaBean将功能、处理、值、数据库访问和其他任何可以用Java代码创造的对象进行打包，并且其他的开发者可以通过内部的JSP页面、Servlet、其他JavaBean、applet程序或者应用来使用这些对象，用户可以认为JavaBean提供了一种随时随地的复制和粘贴的功能，而不用关心任何变化
+> 3. 《Think in Java》中提到，JavaBean最初是为了Java GUI的可视化编程提供的。你拖动IDE构建工具创建一个GUI组件（如多选框），其实是工具给你创建Java类，并提供将类的属性暴露出来给你修改调整，将事件监视器暴露出来
+> 4. **实例**
+
+**UML类图**
+
+- 无需多言，不想比比
+
+---
+
+**随堂复习与企业真题**
+
+> 1. Java中内存结构划分：==虚拟机栈、堆、方法区==、程序计数器（PC寄存器）本地方法栈
+>    - 虚拟机栈：以栈帧为虚拟单位，有入栈和出栈操作；每个栈帧对应一个方法；方法内的局部变量会存储在栈帧中
+>    - 堆空间：new出来的结构（数组、对象）：①数组，数组的元素在堆中 ②对象的成员变量在堆中
+>    - 方法区：加载的类的模板结构
+> 2. 类的成员之一：属性（或成员变量）
+>    - 属性≠局部变量
+>      - 声明的位置不同
+>      - 内存中存放的位置不同
+>      - 作用域不同
+>      - 权限修饰符不同
+>      - 初始化值赋值时间不同
+>    - 属性 == 成员变量 == field == 字段/域
+> 3. 面向对象，面向过程的理解
+> 4. Java中引用类型有哪几种
+>    - 类、数组、接口；枚举、注解、记录
+> 5. 类和对象的区别
+> 6. 项目中有哪些地方用到了面向对象
+>    - 万事万物皆对象
+> 7. 对象存在Java内存的哪块区域中
+>    - 堆空间；new出来的实例
+> 8. main方法的public能不能换成private？为什么？
+>    - 能。但是改以后就不能作为程序的入口了，只是一个普通的方法
+> 9. 构造器和普通方法的区别
+>    - 编写代码的角度：没有共同点。声明格式、作用都不同。
+>    - 字节码文件的角度：构造器会以```<init>()```方法的形态呈现，用于初始化对象
+> 10. 构造器Constructor能不能重载overload
+>     - 可以
+
+**this关键字**
+
+- 它在方法（准确的说是实例方法或非static方法）的内部使用
+
+> 1. this调用构造器
+>    - 用`this()`调空参构造器
+>    - `this(形参列表)`  必须声明在当前构造器的首行
+>    - 如果一个类中声明了 n 个构造器，this(形参列表最多有 n - 1 个
+
+## 面向对象特征之二：继承
+
+- 继承的好处：继承的出现减少了代码冗余，提高了代码的复用性。
+- 继承的出现，更有利于功能的拓展
+- 继承的出现让类与类之间产生了`is-a`的关系，为多态的使用提供了前提
+
+**继承的格式**
+
+```java
+class A {
+    //fields and methods
+}
+
+class B extends A {
+    
+}
+```
+
+1. 继承中的基本概念：
+
+   - 类A：父类、superClass、超类、基类
+   - 类B：子类、superClass、派生类
+
+2. 继承之后
+
+   - 子类获取到了父类中声明的所有属性和方法
+
+   - 私有属性和变量也被继承来了，但没有权限访问（受封装性所限）
+
+   - 子类在继承父类之后还可以扩展自己特有的功能（体现：增加特有的属性和方法）
+
+   - extends：拓展、延伸
+
+     要区别父类、子类和集合、子集之间的关系
+
+3. 默认的父类：
+
+   - Java中声明的类，如果没有显示的声明其父类时，则默认继承于java.lang.Object
+
+4. 补充说明：
+
+   - Java支持多层继承
+
+     概念：之间父类、间接父类
+
+   - Java的子父类的概念是相对的
+
+   - Java中一个父类可以声明多个子类，反之，一个子类只能有一个父类（Java的单继承性）
+
+5. 实际开发中四种权限的使用频率
+
+   - public和private的使用频率最高
+   - 常量和方法一般为public，在final中会说明
+
+**方法的重写(overwrite/overdire)**
+
+- 子类在继承父类之后，就获取了父类中声明的所有方法.但是父类中的方法并不一定适用于子类，换句话说，子类需要对继承于父类中的方法进行覆盖、重写。
+- 子类对继承于父类的方法进行覆盖、覆写的操作，即为方法的重写
+
+1. 重写举例
+
+   - ```java
+     class Account {
+         double balance;
+         
+         public void withdraw(double amt) {
+             //judge if current account is enable to withdraw the amount required
+         }
+     }
+     
+     class CheckAccount extends Account {
+         double protectedBy;
+         	
+         	//override
+             public void withdraw(double amt) {
+             //judge if current account is enable to withdraw the amount required
+             //如果不够，还可以考虑从protectedBy中取
+                 
+         }
+     }
+     
+     class AccountTest {
+         public static void main(String[] args) {
+             CheckAccount acct = new CheckAccount();
+             acct.withdraw();
+             //执行的是子类所重写的方法
+             //execute the method override by the subclass
+         }
+     }
+     ```
+
+2. 方法重写应遵循的规则
+
+   - 父类被重写的方法与子类重写的方法，其形参列表必须相同
+   - 子类重写的方法的权限修饰符不小于父类被重写的方法的权限修饰符
+   - 子类不能重写父类中声明为private权限修饰的方法
+   - 若父类被重写的方法的返回值类型为void，则子类重写的方法的返回值类型必须是void
+   - 若父类被重写的方法的返回值类型为基本数据类型，则子类重写的方法的返回值类型必须与被重写的方法的返回值类型相同
+   - 若父类被重写的方法的返回值类型为引用数据类型（如类），则子类重写的方法返回值类型可以与被重写方法的返回值类型相同或是被重写方法的父类的子类
+   - 方法体（超纲）：子类重写方法的方法体必然与父类被重写方法的方法体不同
+
+3. 面试题：
+
+   - 区分overload和override/overwrite
+
+     重载：“两同一不同”
+
+     重写：继承以后，子类覆盖父类中同名同参数的方法
+
+---
+
+**super关键字**
+
+- 在子类中调用父类中已经被重写过的方法
+- 子类继承父类后，发现子类和父类定义了同名的属性：是否可以在子类中区分两个同名的属性
+
+1. super可以调用的结构
+   - 属性、方法、构造器
+
+1. super的调用方法
+
+   - ```java
+     // show the super in CLASS
+     public void show() {
+         method();//method of subclass
+         
+         this.method();//method of subclass
+         
+         super.method;//method of the class
+     }
+     ```
+
+   - ```java
+     // show the super in FILED
+     // 属性有就近原则
+     public class ClassTest {
+         public static void main(String[] args) {
+             Class class = new Class();
+             //不好意思，这里的实例代码写毁了，啥也说明不了，表看了
+             class.method();
+             class.method2();
+             class.method3();
+         }
+     }
+     ```
+
+   - super调用构造器
+
+     - 子类继承父类时，不会继承父类的构造器，只能通过==super(形参列表)==的方式调用父类指定的构造器
+
+     - ```java
+       //super调用父类的构造器
+       public Student() {
+           super(); //调用了父类中空参的构造器
+           System.out.println("Constructor of Student");
+       }
+       ```
+
+   - 在一个构造器的首行，==this（形参列表）==和==super（形参列表）==只能二选一
+
+   - 如果在子类构造器的首行既没有调用this()和super()，则子类构造器默认调用super(),即调用父类中空参的构造器
+
+   - 子类的任何一个构造器，要么调用本类中重载的构造器，要么调用父类的构造器，没有其他情况
+
+   - 通过子类的构造器创建实例时，在调用子类构造器的过程中一定直接或间接的调用过父类的构造器 
+
+   
+
+1. 企业真题
+
+   - 从过程来看：
+
+     ​		当我们通过子类的构造器创建对象时，子类的构造器一定会直接或间接的调用到其父类的构造器，而其父类的构造器同样会直接或间接的调用到其父类的构造器......一直到调用了Object类中的构造器为止
+
+     ​		也正因为我们调用过子类所有父类的构造器，所以我们就会将父类中声明的属性、方法加载到内存中，供子类的对象使用
+
+     ​		==注意：==在创建子类对象的过程中，一定会调用父类中的构造器！！！
+
+   - 从结果的角度看：
+
+     ​		当我们创建子类对象后，子类对象就获取了其父类中声明的所有属性和方法，在权限允许的情况下，可以直接调用。
+
+**多态性**
+
+1. 多态性的应用：==虚拟方法调用==
+
+   在多态的场景下，调用方法时
+
+   - 编译时：认为方法是左边声明的父类的类型的方法（即被重写的方法）
+   - 执行时：实际执行的是子类重写父类的方法
+
+   > 简而言之：编译（字节码文件中可以体现）看左边、运行看右边
+
+2. 多态性的使用前提
+
+   - 要有类的继承关系
+   - 要有方法的重写
+
+3. Java中多态性的体现
+
+   - 子类对象的多态性：父类的引用指向子类的对象（子类的对象赋给对象的引用）
+
+     > 如`Person p2 = new Man()`
+     >
+     > ```java
+     > public class AnimalTest {
+     >     public static void main(String[] args) {
+     >         AnimalTest test = new AnimalTest();
+     >         test.adopt(new Dog());
+     >     }
+     >     public void adopt(Animal animal) {
+     >         animal.method1();
+     >         animal.method2();
+     >     }
+     > //   public void adopt(Dog dog) {
+     > //     dog.method1();
+     > //     dog.method2();
+     > //  }
+     > }
+     > ```
+
+4. 多态性的适用性
+
+   - 适用于方法，不适用于属性 
+
+   > 开发中，使用父类做方法的形参，是多态使用最多的场合。即使增加了新的子类，方法也无需改变，提高了拓展性，也符合开闭原则
+   >
+   > ==开闭原则：==
+   >
+   > - 对拓展开放，对修改关闭
+   > - 通俗解释：软件系统中的各种组件，如Module、Classes、Functions等，应该在不修改现有代码的基础上，引入新功
+
+5. 多态的弊端
+
+   - 问题：`Person p2 = new Man()` 针对于创建的对象，在内存中是否加载了Man类中声明的特有的属性和方法？ 答：加载了
+   - 问题：能不能直接调用Man中加载的特有属性和方法？答：不能
+   - 在多态的场景下，我们创建了子类的对象，也加载了子类特有的属性和方法。但是由于声明为父类的引用，导致我们没有办法直接调用子类特有的属性和方法
+
+6. 向下转型
+
+   > ```mermaid
+   > graph LR
+   > A(较低级的基本数据类型)-->|自动类型提升|B(较高级的基本数据类型)
+   > B-->|强制类型转换|A
+   > ```
+   >
+   > ```mermaid
+   > graph LR
+   > A(子类-如Person)-->|向上转型-多态|B(父类-如Student)
+   > B-->|向下转型-使用instanceof进行判断|A
+   > ```
+
+   - 向下转型可能出现：类型转换异常(ClassCastException)
+
+   - 建议在向下转型之前，使用instanceof进行判断，避免出现类型转换异常
+
+     ```java
+     //格式 a instanceof A : 判断对象a是否是类A的实例
+     //如果a instanceof A 返回 true，则 a instanceof superA  返回值也是true，其中，A是superA的子类
+     if (p2 instanceof Man) {
+         Man m2 = (Man)p2;
+         m2.method();
+     }
+     ```
+
+   - 静态绑定：编译和运行时对应的是同一个方法（静态方法-编译中是谁，运行中就是谁）
+
+   - 动态绑定：编译和运行时对应的不是同一个方法，如方法重写会导致动态绑定情况出现
+
+7. 多态面试题
+
+   - 多态是编译时行为还是运行时行为  答：运行时行为
+
+### 8 Object类的使用
+
+8.1 如何理解根父类
+
+> 类```java.lang.Object```是**类层次结构**的根类，即所有其他类的父类。每个类都使用**Object**作为超类。
+- Object类型的变量与除Object以外的任意引用数据类型的对象都存在多态引用
+
+```java
+import tech.REvolicise.polymorphism2.Person;
+
+method(Object obj) {
+    method();
+}
+
+Person o = new Person();
+method(o);
+
+```
+- 任何一个Java类(除了Object类)都直接或间接的继承于Object类
+- Object类成为Java类的根父类
+- Object类中声明的结构(属性、方法)就具有通用性
+  - Object类中没有声明属性
+  - Object类提供了一个空参的构造器
+  - 重点关注：Object类中声明的方法
+
+8.2 常用方法(Object方法共11个)
+> 重点方法：equals() \ toString()
+> 了解方法：clone() \ finalize(提供对象释放时的遗言操作|析构)
+> 现阶段不需要关注：getClass() \ hashCode(获取哈希数) \ notify(唤醒) \ notifyAll \ wait() \ wait(xx) \ wait(xx,yy)
+- 面试题：final、finally、finalize的区别
+
+8.3 equals()的使用
+
+- 适用性：任何引用数据类型都可以使用
+
+- ```java
+  // Object中的方法示例
+  public boolean equals(Object obj) {
+      return (this == obj);
+  }
+  ```
+
+- 子类使用说明：
+
+  自定义的类在没有**重写**Object中equals方法的情况下，调用的就是Object类中声明的equals()，比较两个对象的**引用地址**是否相同（或比较两个对象是否指向了堆空间的同一个对象实体）
+
+8.4 区分 == 和 equals()
+
+- ==
+
+  ①使用范围：基本数据类型、引用数据类型
+
+  - 基本数据类型：判断数据值是否相等
+
+  - 引用数据类型：判断地址值是否相等
+
+    ```java
+    // 数据值
+    int i1 = 10;
+    int i2 = 10;
+    sout(i1 == i2); // true
+    
+    // 地址值
+    String str1 = new String("string-1");
+    String str2 = new String("string-2");
+    System.out.println(str1 == str2);// false
+    ```
+
+-  equals()
+
+  ②使用范围：只能在引用数据类型上
+
+
+
+8.5 toString()的使用
+
+- Object类中toString()的定义：
+
+  ```java
+  public String toString() {
+      return getClass().getName() + "@" + Integer.toHexString(hashCode());
+  }
+  ```
+
+- 开发中的使用场景
+
+  - 平时我们在调用System.out,println()打印对象引用变量时，其实就调用了对象的toString()
+
+- 子类的使用说明
+
+  ① 自定义的类
+
+  在没有重写Object类的toString()情况下默认返回的是当前对象的地址值:
+
+  >  `return getClass().getName() + "@" + Integer.toHexString(hashCode());`
+
+  ② 如String、File、Date或包装类
+
+  都重写了Object类的toString()方法，在调用toString()时，返回当前对象的实体内容
+
+- 开发中的使用说明
+
+  - 习惯上，开发中对于自定义的类在调用toString()时，也希望显示其对象的实体内容，而非地址值。
+
+    这时候，就需要重写Object类中的toString()方法
+
+### 第七章随堂复习与企业真题
+
+#### 一、随堂复习
+
+1. this关键字的使用
+
+   - this调用的结构：属性、方法、构造器 (attribute method constructor)
+
+   - this调用属性和方法时，理解为：当前对象或当前正在创建的对象
+
+     ```java
+     public void setName(String name) { // 当属性名和形参名同名时，必须使用this来区分
+         this.name = name; // 此时的this为当前对象
+     }
+     
+     
+     public Person(String name) {
+         this.name = name; // 此时的this为当前正在创建的对象
+     }
+     ```
+
+   - this(形参列表)的方式，表示调用当前类中其他重载的构造器
+
+2. 面向对象的特征二：继承性
+
+   - 继承性的好处：
+     - 减少了代码的冗余，提高了代码的复用性
+     - 提高了扩展性
+     - 为多态的使用提供了前提
+   - Java中继承性的特点
+     - 局限性：类的单继承性，后续我们通过类实现接口的方式，解决单继承的局限性
+     - 支持多层继承，一个父类可以声明多个子类
+   - 基础：class A extends B {}
+   - 理解：通过继承，子类就获取了父类中声明的全部属性、方法，但可能受限于封装性的影响，不能直接调用
+
+1. 方法的重写（override / overwirte）
+   - 面试题：方法的重载与重写的区别
+     - 方法的重载：“两同一不同”
+     - 方法的重写：
+       - 前提：类的继承关系
+       - 子类对父类中同名参数方法的覆盖、覆写
+2. super关键字的使用
+3. 子类对象实例化的全过程
+4. 面向对象特征三：多态性
+5. Object类的使用
+6. 项目二：拼电商客户管理系统
+
+#### 二、企业真题
+
+
+
+
+
