@@ -383,6 +383,95 @@ AboutQt消息框显示了应用程序正在使用的Qt的版本号等信息。
 QMessageBox::aboutQt(this, tr("About Qt消息框"));
 ```
 
+---
+
+
+
+## --QT（5.14.2） 安装mysql驱动详细流程
+
+> 环境介绍：
+> windows10
+> QT5.14.2 编译器MingGW64-bit
+> 数据库：mysql-8.0.23-winx64
+
+1. 下载mysql
+   https://dev.mysql.com/downloads/mysql/
+
+2. 拷贝libmysql.dll
+   将mysql/lib内的动态库文件·libmysql.dll·复制，拷贝到==Qt5.14.2/5.14.2/mingw73_64/bin==
+   的文件夹内
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2021020213563844.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NhemFzcw==,size_16,color_FFFFFF,t_70)
+
+3. 检查mysql驱动
+   检查QT目录中==Qt5.14.2/5.14.2/mingw73_64/plugins/sqldrivers==目录下
+   ，观察是否存在qsqlmysql.dll文件
+   一下就是没有安装驱动的情况。
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210202140450672.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NhemFzcw==,size_16,color_FFFFFF,t_70)
+
+4. 编译qsqlmysql.dll文件
+   4.1 需要利用QT的源码进行编译，所以QT在安装的时候需要选择source选择来安装源码，安装好之后在QT目录下可以找到Src文件夹，里面就是Qt源码
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210202142404836.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NhemFzcw==,size_16,color_FFFFFF,t_70)
+
+​	4.2 然后我们找到Qt源码所在的目录==Qt5.14.2\5.14.2\Src\qtbase\src\plugins\sqldrivers\mysql==，打开mysql.pro
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210202143033911.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NhemFzcw==,size_16,color_FFFFFF,t_70)
+
+​	4.3 然后修改mysql.pro文件：
+
+```pro
+TARGET = qsqlmysql
+
+HEADERS += $$PWD/qsql_mysql_p.h
+SOURCES += $$PWD/qsql_mysql.cpp $$PWD/main.cpp
+
+#QMAKE_USE += mysql  #！！注意要注释掉
+
+OTHER_FILES += mysql.json
+
+PLUGIN_CLASS_NAME = QMYSQLDriverPlugin
+# ！！mysql的lib路径
+LIBS += -L $$quote(E:/mysql/mysql/mysql-8.0.23-winx64/lib) -llibmysql
+# ！！mysql的include路径
+INCLUDEPATH += $$quote(E:/mysql/mysql/mysql-8.0.23-winx64/include)
+# ！！mysql的include路径
+DEPENDPATH += $$quote(E:/mysql/mysql/mysql-8.0.23-winx64/include)
+
+# 这里自定义编译后的文件保存路径，免得找不着
+DESTDIR = /your/custom/path
+
+include(../qsqldriverbase.pri)
+```
+
+​	4.4 然后直接编译：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210202144331968.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NhemFzcw==,size_16,color_FFFFFF,t_70)
+
+​	4.5 然后出现对话框即为编译成功：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210202144445550.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NhemFzcw==,size_16,color_FFFFFF,t_70)
+
+​	4.6 然后在QT的同级目录下，若是默认地址则是在C盘中，会出现plugins的文件夹，这就是我们刚刚编译出来的库文件。
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210202144548324.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NhemFzcw==,size_16,color_FFFFFF,t_70)
+
+​	4.7 拷贝两个库文件`qsqlmysql.dll`和`qsqlmysql.dll.debug`
+到QT目录中==Qt5.14.2\5.14.2\mingw73_64\plugins\sqldrivers==目录下：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210202144938612.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NhemFzcw==,size_16,color_FFFFFF,t_70)
+
+​	然后mysql的驱动即安装成功！
+
+​	当项目进行发布时，需要将libmysql.dll和libmysql.lib文件放在项目的发布目录里，发布项目才能正常连接数据库
+
+---
+
+
+
+## -- Qt连接Mysql数据库
+
 在“ProjectName”.pro工程文件中加入sql模块
 
 ```java
@@ -390,10 +479,6 @@ QT += sql
 ```
 
 ![](image-20240426023457437.png)
-
----
-
-## -- Qt连接Mysql数据库
 
 在头文件“maindialog".h中添加数据库相关头文件
 
@@ -481,6 +566,217 @@ MainDialog::MainDialog(QWidget *parent)
 连接测试
 
 ![image-20240427175442252](image-20240427175442252.png)
+
+---
+
+
+
+## --Qt连接Mysql数据库（Super Plus 重制版）
+
+1. 绘制简单的界面，以便操作数据库
+
+   ![image-20240507204253318](image-20240507204253318.png)
+
+2. 在工程文件**(.pro)**中导入数据库模块
+
+   ```cpp
+   QT       += core gui
+   
+   // 添加sql模块
+   QT += sql
+   ```
+
+3. 在**widget.h**中添加数据库头文件，并声明数据库对象**db**
+
+   ```cpp
+   #ifndef WIDGET_H
+   #define WIDGET_H
+   
+   #include <QWidget>
+   
+   // 添加数据库头文件
+   #include <QSqlDatabase>
+   
+   QT_BEGIN_NAMESPACE
+   namespace Ui { class Widget; }
+   QT_END_NAMESPACE
+   
+   class Widget : public QWidget
+   {
+       Q_OBJECT
+   
+   public:
+       Widget(QWidget *parent = nullptr);
+       ~Widget();
+   
+   private:
+       Ui::Widget *ui;
+       
+       // 声明数据库对象db
+       QSqlDatabase db;
+   };
+   #endif // WIDGET_H
+   ```
+
+3. 在**widget.cpp**的构造函数中连接数据库
+
+   ```cpp
+   // 设置数据库类型为QMYSQL，这是MySQL数据库的Qt框架驱动
+   db = QSqlDatabase::addDatabase("QMYSQL");
+   
+   // 设置数据库的名称，这里假设数据库名为mydatabase
+   db.setDatabaseName("mydatabase");
+   
+   // 设置数据库服务器的地址，这里使用本地服务器，地址为localhost
+   db.setHostName("localhost");
+   
+   // 设置数据库的用户名，这里使用root用户
+   db.setUserName("root");
+   
+   // 设置数据库的密码，这里使用密码为123456
+   db.setPassword("123456");
+   
+   // 尝试打开数据库连接
+   if(db.open()) {
+           // 如果连接成功，则弹出信息提示框告知用户
+           QMessageBox::information(this,"连接提示","连接成功");
+       } else {
+           // 如果连接失败，则弹出警告提示框告知用户
+           QMessageBox::warning(this,"连接提示","连接失败");
+       }
+   }
+   ```
+   
+   ![image-20240507223758317](image-20240507223758317.png)
+
+---
+
+
+
+## --Qt操作Mysql数据库
+
+> 添加**QSqlQuery**头文件，用于进行数据库操作
+>
+> `#include <QSqlQuery>`
+
+1. 利用按钮槽函数，在表中插入记录
+
+   ```cpp
+   // Widget类的成员函数on_insert_pushButton_clicked，当用户点击插入按钮时触发
+   void Widget::on_insert_pushButton_clicked() {
+       // 从界面获取学生ID、姓名和出生日期
+       QString id = ui->id_lineEdit->text(); // 获取学生ID
+       QString name = ui->name_lineEdit->text(); // 获取学生姓名
+       QString birth = ui->birth_lineEdit->text(); // 获取学生出生日期
+   
+       // 构造SQL插入语句，向student表中插入数据
+       QString sql = QString("insert into student values (%1,'%2','%3');").arg(id).arg(name).arg(birth);
+       // 使用QSqlQuery对象执行SQL语句
+       QSqlQuery query;
+       if(query.exec(sql)) { // 如果执行成功
+           // 弹出提示框，告知用户插入成功
+           QMessageBox::information(this,"插入提示","插入成功");
+       } else { // 如果执行失败
+           // 弹出提示框，告知用户插入失败
+           QMessageBox::information(this,"插入提示","插入失败");
+       }
+   }
+   ```
+
+   > `QString sql` 是构造的SQL插入语句，`%1`、`%2`、`%3` 是占位符，将会被 `id`、`name` 和 `birth` 的值替换。
+   >
+   > `QSqlQuery query` 是用来执行SQL语句的对象。
+   >
+   > `query.exec(sql)` 执行构造的SQL语句。
+
+2. 利用查询按钮槽函数，在`TableView`组件中展示记录
+
+   2.1 导入sql模板头文件，并声明模板对象
+
+   ```cpp
+   #ifndef WIDGET_H
+   #define WIDGET_H
+   
+   #include <QWidget>
+   #include <QSqlDatabase>
+   
+   // 导入sql模板头文件
+   #include <QSqlTableModel>
+   
+   QT_BEGIN_NAMESPACE
+   namespace Ui { class Widget; }
+   QT_END_NAMESPACE
+   
+   class Widget : public QWidget
+   {
+       Q_OBJECT
+   
+   public:
+       Widget(QWidget *parent = nullptr);
+       ~Widget();
+   
+   private:
+       Ui::Widget *ui;
+       
+       // 声明模板对象
+       QSqlTableModel *model;
+   };
+   #endif // WIDGET_H
+   ```
+
+   2.2 完成`tableView`和`连接按钮`的槽函数
+
+   ```cpp
+   #include "widget.h"
+   #include "ui_widget.h"
+   
+   Widget::Widget(QWidget *parent)
+       : QWidget(parent)
+       , ui(new Ui::Widget)
+   {
+       ui->setupUi(this);
+   
+   }
+   
+   Widget::~Widget()
+   {
+       delete ui;
+   }
+   
+   
+   void Widget::on_pushButton_connect_clicked()
+   {
+       db = QSqlDatabase::addDatabase("QMYSQL");
+       db.setHostName("47.120.34.243");
+       db.setDatabaseName("mydatabase");
+       db.setUserName("test");
+       db.setPassword("_Test141760");
+   
+       bool isFlag = db.open();
+       if(isFlag) {
+           QMessageBox::information(this,"连接通知","连接成功");
+       }else {
+           QMessageBox::warning(this,"连接通知","连接成功");
+       }
+   
+       m = new QSqlTableModel;
+       m->setTable("student");
+       ui->tableView_sql->setModel(m);
+   }
+   
+   void Widget::on_pushButton_select_clicked()
+   {
+       m->select();
+   }
+   ```
+
+   
+
+
+
+
+
+
 
 ---
 
@@ -851,6 +1147,8 @@ QImage载入图片至Label标签
 
 ---
 
+
+
 #### 调用保存内部文件接口
 
 > 所需方法：`getSaveFileName()`
@@ -901,6 +1199,8 @@ QImage载入图片至Label标签
 
 ---
 
+
+
 #### 打开指定文件并操作
 
 ```cpp
@@ -925,6 +1225,8 @@ file.close();
 ```
 
 ---
+
+
 
 #### QEvent类处理键盘事件
 
@@ -977,6 +1279,10 @@ file.close();
        }
    }
    ```
+
+---
+
+
 
 #### QEvent类处理鼠标事件
 
@@ -1050,4 +1356,191 @@ file.close();
 
    ---
 
+
+
+#### 作为TCP客户端连接
+
+1. 在工程文件**TCP_Client.pro**中添加网络连接库
+
+   `QT       += core gui network`
+
+2. 在**widget.h**中添加`QTcpSocket`和`QHostAddress`，并声明网络对象
+
+   ```cpp
+   #ifndef WIDGET_H
+   #define WIDGET_H
    
+   #include <QWidget>
+   // 添加QTcpSocket头文件
+   #include <QTcpSocket>
+   // 添加处理主机地址类
+   #include <QHostAddress>
+   
+   QT_BEGIN_NAMESPACE
+   namespace Ui { class Widget; }
+   QT_END_NAMESPACE
+   
+   class Widget : public QWidget
+   {
+       Q_OBJECT
+   
+   public:
+       Widget(QWidget *parent = nullptr);
+       ~Widget();
+   
+   private slots:
+       void on_Cancel_pushButton_clicked();
+       
+   private:
+       Ui::Widget *ui;
+       
+       // 声明网络对象socket
+       QTcpSocket *socket;
+   };
+   #endif // WIDGET_H
+   ```
+
+3. 在**widget.cpp**中的构造函数中创建`socket`对象
+
+   ```cpp
+   #include "widget.h"
+   #include "ui_widget.h"
+   
+   Widget::Widget(QWidget *parent)
+       : QWidget(parent)
+       , ui(new Ui::Widget)
+   {
+       ui->setupUi(this);
+       
+       // 在构造函数中创建socket对象(初始化)
+       socket = new QTcpSocket;
+   }
+   
+   Widget::~Widget()
+   {
+       delete ui;
+   }
+   
+   
+   void Widget::on_Cancel_pushButton_clicked()
+   {
+       this->close(); // 关闭窗口，即取消连接操作
+   }
+   
+   ```
+
+4. 编写处理TCP连接按钮的槽函数
+
+   ```cpp
+   // 处理TCP连接按钮的槽函数，当用户点击连接按钮时，此函数会被调用
+   void Widget::on_Connect_pushButton_clicked()
+   {
+       // 获取用户在IP地址输入框中输入的IP地址
+       QString IP = ui->IP_lineEdit->text();
+       // 获取用户在端口号输入框中输入的端口号
+       QString Port = ui->Port_lineEdit->text();
+   
+       // 使用用户输入的IP地址和端口号尝试连接服务器
+       socket->connectToHost(QHostAddress(IP),Port.toShort());
+   
+       // 连接服务器成功时，会发出connected信号，这里使用lambda表达式作为连接信号的槽函数
+       // 在连接成功后弹出一个信息框提示用户连接成功
+       connect(socket,&QTcpSocket::connected,[this]() {
+           QMessageBox::information(this,"连接提示","连接服务器成功");
+       });
+   
+       // 连接断开时会发出disconnected信号，这里同样使用lambda表达式作为连接信号的槽函数
+       // 在连接断开后弹出一个信息框提示用户网络断开，连接异常
+       connect(socket,&QTcpSocket::disconnected,[this]() {
+           QMessageBox::information(this,"连接提示","网络断开，连接异常");
+       });
+   }
+   ```
+
+5. 编写断开TCP连接按钮的槽函数
+
+   ```cpp
+   void Widget::on_Cancel_pushButton_clicked()
+   {
+       socket->disconnectFromHost();
+       // 连接断开时会发出disconnected信号，这里同样使用lambda表达式作为连接信号的槽函数
+       // 在连接断开后弹出一个信息框提示用户网络断开，连接异常
+       connect(socket,&QTcpSocket::disconnected,[this]() {
+           QMessageBox::information(this,"连接提示","网络断开，连接异常");
+       });
+   
+       this->close(); // 关闭窗口，即取消连接操作
+   }
+   ```
+
+---
+
+#### 作为TCP服务端连接
+
+
+
+---
+
+#### Qt启动新窗口
+
+1. 在Forms文件夹中添加新的Qt设计师界面类
+
+   ![image-20240507171000252](image-20240507171000252.png)
+
+2. 在当前窗口的**widget.h**中引入新窗口的头文件
+
+   ```cpp
+   #include <QWidget>
+   
+   // 新窗口的头文件
+   #include <newwindow.h>
+   ```
+
+3. 编写启动新窗口按钮的槽函数
+
+   ```cpp
+   // 这是一个槽函数，当用户点击开始新窗口按钮时会被触发。
+   void Widget::on_pushButton_StartNewWindow_clicked() {
+       // 隐藏当前窗口
+       this->hide();
+   
+       // 创建一个新窗口的实例
+       // 用new在堆空间开辟内存，防止按钮事件结束后新窗口对象被释放
+       // 窗口构造函数可传参：new NewWindow(Param1,Param2),需要提前声明参数类型
+       NewWindow *windows = new NewWindow; 
+   
+       // 显示新创建的窗口
+       windows->show();
+   }
+   ```
+
+   ---
+
+
+
+#### 解决Qt运行画面比例失调
+
+在main函数方法体第一行添加以下代码：
+
+```cpp
+    if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling,true);
+```
+
+---
+
+
+
+#### 打印可使用的数据库驱动
+
+在`main方法`下添加如下代码
+
+```cpp
+    qDebug()<<"Available drivers:";
+    QStringList drivers=QSqlDatabase::drivers();
+    foreach(QString dvr,drivers)
+    {
+        qDebug()<<dvr;
+    }
+```
+
