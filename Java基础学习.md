@@ -5,7 +5,6 @@
 > 3. 面向对象（三大特性：继承、封装、多态）
 > 4. 异常处理
 > 5. 常用类
-> 6. 
 
 ## 第一章
 
@@ -1332,10 +1331,10 @@ switch(Expression) {
 >      ```java
 >      Order order1 = new Order();
 >      order1.orderID = 1001;
->                                                                                                
+>                                                                                                     
 >      Order order2 = order1;
 >      order2.orderID = 1002;
->                                                                                                
+>                                                                                                     
 >      System.out.println(order1.orderID); // 1002
 >      ```
 >
@@ -2321,6 +2320,4 @@ public void regist(int id) {
 - ② `throws`
 
 **7.3 为什么需要自定义异常类**
-
-
 
